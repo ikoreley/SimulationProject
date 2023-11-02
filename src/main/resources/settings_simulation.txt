@@ -1,0 +1,13 @@
+sizeFieldRow:10
+sizeFieldCol:10
+CreatureSpeedHerbivore:1
+CreatureHpHerbivore:5
+CreatureSpeedPredator:1
+CreatureHpPredator:5
+percentageOfFilledCell:50
+percentHerbivore:8
+percentPredator:4
+percentGrass:22
+EntityGrassHpPlus:2
+
+
