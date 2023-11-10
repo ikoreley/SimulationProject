@@ -3,7 +3,6 @@ package ik.koresh;
 
 import ik.koresh.view.AreaConsoleRender;
 
-
 public class Main {
     public static void main(String[] args) {
 

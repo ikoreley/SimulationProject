@@ -3,14 +3,15 @@ package ik.koresh.entites;
 
 import ik.koresh.Color;
 import ik.koresh.Coordinate;
-import ik.koresh.SettingFileInput;
+import ik.koresh.util.PropertiesEntityUtil;
 
 public class Herbivore extends Creature{
 
     public Herbivore(Coordinate coordinate, Color color) {
         super(coordinate, color);
-        this.hp = SettingFileInput.getSettingsSimulation().get("CreatureHpHerbivore");
-        this.speed = SettingFileInput.getSettingsSimulation().get("CreatureSpeedHerbivore");
+        this.hp = PropertiesEntityUtil.get("HpHerbivore");
+        this.speed = PropertiesEntityUtil.get("SpeedHerbivore");
+
     }
 
     @Override
