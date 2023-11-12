@@ -1,5 +1,6 @@
 package ik.koresh;
 
+import ik.koresh.entites.Creature;
 import ik.koresh.entites.Entity;
 
 import java.util.HashMap;

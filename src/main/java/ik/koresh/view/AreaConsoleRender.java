@@ -20,10 +20,10 @@ public class AreaConsoleRender {
             StringBuilder sb = new StringBuilder();
             for (int y = 0; y<AreaService.col; y++){
                 Coordinate coordinate = new Coordinate(x, y);
-                if (entityService.isSquareEmpty(coordinate, area)) {
+                if (entityService.isSquareEmptyArea(coordinate, area)) {
                     sb.append(Color.WHITE.stringColor).append("   ");
                 }else {
-                    sb.append(entityService.getEntity(coordinate, area).color.stringColor).append("   ");
+                    sb.append(entityService.getInAllEntity(coordinate, area).color.stringColor).append("   ");
                 }
             }
             sb.append(Color.ANSI_RESET.stringColor);

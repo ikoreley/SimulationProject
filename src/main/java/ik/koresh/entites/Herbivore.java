@@ -14,12 +14,19 @@ public class Herbivore extends Creature{
 
     }
 
-    @Override
-    public void makeMove() {
-
-    }
+//    @Override
+//    public void makeMove() {
+//        MoveService.move();
+//    }
 
     public Coordinate getCoordinate(){
         return super.coordinate;
+    }
+
+    public void setHP(Grass grass){
+        hp = hp + grass.getHpPlus();
+    }
+    public Integer getHp(){
+        return hp;
     }
 }

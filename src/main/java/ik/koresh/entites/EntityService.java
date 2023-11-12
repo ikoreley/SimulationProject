@@ -1,6 +1,7 @@
 package ik.koresh.entites;
 
 import ik.koresh.Area;
+import ik.koresh.AreaService;
 import ik.koresh.Coordinate;
 
 public class EntityService {
@@ -10,6 +11,11 @@ public class EntityService {
         return instance;
     }
 
+    private Area area;
+
+    public void setArea(Area area) {
+        this.area = area;
+    }
 
     // ставим сущность на поле
     public void setEntity(Coordinate coordinate, Entity entity, Area area){
@@ -20,32 +26,48 @@ public class EntityService {
         }
     }
 
+    // ставим на созданное поле
+    public void setEntityOnAreaFill(Coordinate coordinate, Entity entity, Area area){
+        Coordinate temp = entity.coordinate;
 
-    public Entity getEntity(Coordinate coordinate, Area area){
+        area.getMapAllEntity().remove(temp);
+        entity.coordinate = coordinate;
+        area.getMapAllEntity().put(entity.coordinate, entity);
+        if (entity instanceof Creature){
+            area.getMapCreatureEntity().remove(temp);
+            area.getMapCreatureEntity().put(entity.coordinate, entity);
+        }
+
+    }
+
+
+    public Entity getInAllEntity(Coordinate coordinate, Area area){
         return area.getMapAllEntity().get(coordinate);
+    }
+
+
+    public Entity getInCreatureEntity(Coordinate coordinate, Area area){
+        return area.getMapCreatureEntity().get(coordinate);
     }
 
 
     // убираем сущность с поля
     public void removeEntity(Coordinate coordinate, Area area){
         area.getMapAllEntity().remove(coordinate);
-        if (isSquareMovingEntity(coordinate, area))
+        if (isSquareCreatureEntity(coordinate, area))
             area.getMapCreatureEntity().remove(coordinate);
     }
 
     // пустая ли ячейка на всем поле
-    public boolean isSquareEmpty(Coordinate coord, Area area){
-        return !area.getMapAllEntity().containsKey(coord);
+    public boolean isSquareEmptyArea(Coordinate coord, Area area){
+        return !area.getMapAllEntity().containsKey(coord) && AreaService.mapCoord.containsValue(coord);
     }
 
-    // пустая ли ячейка в мапе ходящих
-    public boolean isSquareMovingEntity(Coordinate coord, Area area){
+
+    // есть ли ячейка в мапе ходящих
+    public boolean isSquareCreatureEntity(Coordinate coord, Area area){
         return !area.getMapCreatureEntity().containsKey(coord);
     }
 
-    // Ход сущности
-    public void moveCreature(Coordinate from, Coordinate to, Area area){
-        Entity creature = getEntity(from, area);
-        setEntity(to, creature, area);
-    }
+
 }

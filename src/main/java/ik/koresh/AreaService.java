@@ -15,7 +15,7 @@ public class AreaService {
     public static final int col = PropertiesAreaUtil.get("col");
 
     private static final int countCellUsing = PropertiesEntityUtil.get("percent_ageOfFilledCell");
-
+    public static final Map<Integer, Coordinate> mapCoord = mapNumberingOfCoordinates();
     public static final EntityService entityService = EntityService.getInstance();
 
 
@@ -48,7 +48,7 @@ public class AreaService {
     // наполняем поле сущностями
     public static void fillingAreaEntities(Area area){
         // создаем мапу с пронумированными координатами всего поля
-        Map<Integer, Coordinate> mapCoord = mapNumberingOfCoordinates();
+//        Map<Integer, Coordinate> mapCoord = mapNumberingOfCoordinates();
         // создаем лист рандомных номеров координат в пределах всего поля для установки сущностей
         List<Integer> setInt = new ArrayList<>(generateRandomNumber().stream().toList());
 
@@ -85,8 +85,8 @@ public class AreaService {
     public static Map<Integer, Coordinate> mapNumberingOfCoordinates(){
         Map<Integer, Coordinate> intCoord = new HashMap<>();
         int count = 1;
-        for(int x = 0; x<=row; x++){
-            for (int y = 0; y<=col; y++){
+        for(int x = 0; x<row; x++){
+            for (int y = 0; y<col; y++){
                 intCoord.put(count, new Coordinate(x, y));
                 count +=1;
             }
