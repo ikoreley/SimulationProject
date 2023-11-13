@@ -4,7 +4,7 @@ import ik.koresh.entites.*;
 
 import java.util.*;
 
-public class FindPathAlgorithm { // todo Неправильно работает выбирает ход или весь путь. Надо думать.
+public class FindPathAlgorithm { // todo: Подправил надо понаблюдать.
 
     public static final EntityService entityService = EntityService.getInstance();
 
@@ -42,6 +42,7 @@ public class FindPathAlgorithm { // todo Неправильно работает
 
         while (!queue.isEmpty()) {
             curNode = queue.poll();
+
 //            Set<Coordinates> nextNodes = area.getCreature(coordinateStart).getAvailableMoveCell(area, curNode);
             Set<Coordinate> nextNodes = neighbour.get(curNode);
             for (Coordinate nextNode: nextNodes){
@@ -51,14 +52,13 @@ public class FindPathAlgorithm { // todo Неправильно работает
                     endCoordinate = nextNode;
                     if (!entityService.isSquareEmptyArea(nextNode, area)){
                         if (entityService.getInAllEntity(nextNode, area).getClass() == Herbivore.class && creature.getClass() == Predator.class){
-
-                            break;
+                            queue.clear(); // встречаем подходящю клетку очищаем очередь чтоб дальше не искать
                         }
                         if (entityService.getInAllEntity(nextNode, area).getClass() == Grass.class && creature.getClass() == Herbivore.class){
-
-                            break;
+                            queue.clear(); // встречаем подходящю клетку очищаем очередь чтоб дальше не искать
                         }
                     }
+
                 }
             }
 
@@ -71,7 +71,7 @@ public class FindPathAlgorithm { // todo Неправильно работает
             path.add(tempCoordinate);
             tempCoordinate = visited.get(tempCoordinate);
         }
-
+        System.out.println(path);
         return path.getLast();
     }
 

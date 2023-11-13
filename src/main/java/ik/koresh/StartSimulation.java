@@ -24,7 +24,7 @@ public class StartSimulation {
         System.out.println(area.getMapAllEntity());
         System.out.println(area.getMapCreatureEntity());
 
-//        int count = 0;
+        int count = 0;
 
         while (true) {
             // вывод в консоль заполненного поля
@@ -48,12 +48,12 @@ public class StartSimulation {
             while (!queue.isEmpty()) {
                 Creature creature = queue.remove();
 
-                creature.makeMove(); // todo реализовать этот метод
+                creature.makeMove(); // todo: реализовать этот метод
 
 //                Coordinate coordinateCreatureForRemove = creature.coordinate;
 
 
-                // todo убрать отсюда логику хода в creature.makeMove()
+                // todo: убрать отсюда логику хода в creature.makeMove()
                 Coordinate targetCoordinates = FindPathAlgorithm.pathMove(creature, area);
 
                 System.out.println(targetCoordinates + " " + creature.coordinate + " " + creature.getClass().getSimpleName());
@@ -77,10 +77,10 @@ public class StartSimulation {
 
 
             }
-            System.out.println("________________");
+            System.out.println("________________" + count);
 //            if (area.getMapCreatureEntity().size() == 1) return; // не нужно, это решает  if(queue.size() == 1 || queue.size() == 0) return;
 
-//            count++;
+            count++;
 
         }
     }
