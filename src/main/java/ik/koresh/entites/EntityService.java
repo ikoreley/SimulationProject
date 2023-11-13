@@ -6,6 +6,8 @@ import ik.koresh.Coordinate;
 
 public class EntityService {
     private final static EntityService instance = new EntityService();
+
+
     private EntityService(){}
     public static EntityService getInstance(){
         return instance;
@@ -15,6 +17,10 @@ public class EntityService {
 
     public void setArea(Area area) {
         this.area = area;
+    }
+
+    public Area getArea(){
+        return area;
     }
 
     // ставим сущность на поле

@@ -19,6 +19,8 @@ public class StartSimulation {
         EntityService.getInstance().setArea(area);
     }
 
+    // Создаем очередь для хода сущностей
+
 
     public void gameLoop() {
         System.out.println(area.getMapAllEntity());
@@ -30,19 +32,7 @@ public class StartSimulation {
             // вывод в консоль заполненного поля
             areaConsoleRender.render(area);
 
-
-            // todo: переместить в отдельный метод создание очереди
-            Queue<Creature> queue = new LinkedList<>();
-            //
-//            area.getMapCreatureEntity().forEach((key, value)->{
-//                queue.add((Creature) value);
-//            });
-            final Map<Coordinate, Entity> coordinatesOfActiveAnimal = area.getMapCreatureEntity();
-            final List<Creature> animals = coordinatesOfActiveAnimal.values().stream()
-                    .map(entity -> (Creature) entity)
-                    .toList();
-            queue.addAll(animals);
-
+            Queue<Creature> queue = MoveService.queueOfCreatureForMove();
 
             if(queue.size() == 1 || queue.size() == 0) return;
             while (!queue.isEmpty()) {
@@ -67,6 +57,7 @@ public class StartSimulation {
                     }
                     else {
 //                        ((Predator)creature).setHP((Herbivore) entity);
+                        queue.remove((Creature)entity);
 
                     }
 //                    entityService.removeEntity(targetCoordinates, area);

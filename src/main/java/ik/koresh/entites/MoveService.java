@@ -4,16 +4,15 @@ import ik.koresh.Area;
 import ik.koresh.AreaService;
 import ik.koresh.Coordinate;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class MoveService {
 
     private static final EntityService entityService = EntityService.getInstance();
 
     private static final Set<Coordinate> creatureMoves = getCreatureMoves();
+
+    private static final Area area = entityService.getArea();
 
     public static void move() {
 
@@ -76,6 +75,18 @@ public class MoveService {
             }
         }
         return result;
+    }
+
+    // Создаем очередь для хода сущностей
+    public static Queue<Creature>  queueOfCreatureForMove(){
+        Queue<Creature> queue = new LinkedList<>();
+        final Map<Coordinate, Entity> coordinatesOfActiveAnimal = area.getMapCreatureEntity();
+        final List<Creature> animals = coordinatesOfActiveAnimal.values().stream()
+                .map(entity -> (Creature) entity)
+                .toList();
+        queue.addAll(animals);
+
+        return queue;
     }
 
 
