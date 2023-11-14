@@ -22,10 +22,10 @@ public class MoveService {
 
 
     // Ход сущности
-    public static void moveCreature(Creature creature, Coordinate to, Area area){
+    public static void moveCreature(Creature creature, Coordinate to){
 //        Entity creature = entityService.getInAllEntity(from, area);
 //        entityService.removeEntity(creature.coordinate, area);
-        entityService.setEntityOnAreaFill(to, creature, area);
+        entityService.setEntityOnAreaFill(to, creature);
     }
 
     private static Coordinate possibleMove(Coordinate from, Coordinate to){
@@ -55,21 +55,21 @@ public class MoveService {
 //                new CoordinatesShift(-1, -1)));
     }
 
-    public static boolean isSquareAvailableForMove(Creature creature, Coordinate coordinateTo, Area area){
-        if (entityService.isSquareEmptyArea(coordinateTo, area)) return true;
-        else if (creature.getClass() == Herbivore.class) return entityService.getInAllEntity(coordinateTo, area).getClass() == Grass.class;
-        else return entityService.getInAllEntity(coordinateTo, area).getClass() == Herbivore.class;
+    public static boolean isSquareAvailableForMove(Creature creature, Coordinate coordinateTo){
+        if (entityService.isSquareEmptyArea(coordinateTo)) return true;
+        else if (creature.getClass() == Herbivore.class) return entityService.getInAllEntity(coordinateTo).getClass() == Grass.class;
+        else return entityService.getInAllEntity(coordinateTo).getClass() == Herbivore.class;
     }
 
 
-    public static Set<Coordinate> getSquareAvailableForMove(Creature creature, Coordinate coordinate, Area area){
+    public static Set<Coordinate> getSquareAvailableForMove(Creature creature, Coordinate coordinate){
         Set<Coordinate> result = new HashSet<>();
 
         for (Coordinate coord: getCreatureMoves()){
             if(isPossibleMove(coordinate, coord)){
                 Coordinate newCoordinate = possibleMove(coordinate, coord);
 
-                if (isSquareAvailableForMove(creature, newCoordinate, area)){
+                if (isSquareAvailableForMove(creature, newCoordinate)){
                     result.add(newCoordinate);
                 }
             }

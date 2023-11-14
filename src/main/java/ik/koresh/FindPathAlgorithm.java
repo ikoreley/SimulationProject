@@ -4,7 +4,7 @@ import ik.koresh.entites.*;
 
 import java.util.*;
 
-public class FindPathAlgorithm { // todo: Подправил надо понаблюдать.
+public class FindPathAlgorithm { // todo: Подправил надо понаблюдать. все равно не то
 
     public static final EntityService entityService = EntityService.getInstance();
 
@@ -13,11 +13,11 @@ public class FindPathAlgorithm { // todo: Подправил надо понаб
     public static Map<Coordinate, Set<Coordinate>> allNeighbourCell(Creature creature, Coordinate coordinate, Area area){
         Map<Coordinate, Set<Coordinate>> result = new HashMap<>();
 
-        result.put(coordinate, MoveService.getSquareAvailableForMove(creature, coordinate, area));
+        result.put(coordinate, MoveService.getSquareAvailableForMove(creature, coordinate));
 
         AreaService.mapCoord.forEach((key, value) -> {
-            if (MoveService.isSquareAvailableForMove(creature, value, area))
-                result.put(value, MoveService.getSquareAvailableForMove(creature, value, area));
+            if (MoveService.isSquareAvailableForMove(creature, value))
+                result.put(value, MoveService.getSquareAvailableForMove(creature, value));
         });
         return result;
     }
@@ -50,11 +50,11 @@ public class FindPathAlgorithm { // todo: Подправил надо понаб
                     queue.add(nextNode);
                     visited.put(nextNode, curNode);
                     endCoordinate = nextNode;
-                    if (!entityService.isSquareEmptyArea(nextNode, area)){
-                        if (entityService.getInAllEntity(nextNode, area).getClass() == Herbivore.class && creature.getClass() == Predator.class){
+                    if (!entityService.isSquareEmptyArea(nextNode)){
+                        if (entityService.getInAllEntity(nextNode).getClass() == Herbivore.class && creature.getClass() == Predator.class){
                             queue.clear(); // встречаем подходящю клетку очищаем очередь чтоб дальше не искать
                         }
-                        if (entityService.getInAllEntity(nextNode, area).getClass() == Grass.class && creature.getClass() == Herbivore.class){
+                        if (entityService.getInAllEntity(nextNode).getClass() == Grass.class && creature.getClass() == Herbivore.class){
                             queue.clear(); // встречаем подходящю клетку очищаем очередь чтоб дальше не искать
                         }
                     }

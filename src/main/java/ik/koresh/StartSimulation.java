@@ -4,22 +4,19 @@ import ik.koresh.entites.*;
 import ik.koresh.view.AreaConsoleRender;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class StartSimulation {
 
 
     private final AreaConsoleRender areaConsoleRender = AreaConsoleRender.getInstance();
     private final EntityService entityService = EntityService.getInstance();
-    private final Area area;
+    private Area area;
 
     public StartSimulation() {
         area = new Area();
-        AreaService.fillingAreaEntities(area);
         EntityService.getInstance().setArea(area);
+        AreaService.fillingAreaEntities();
     }
-
-    // Создаем очередь для хода сущностей
 
 
     public void gameLoop() {
@@ -28,17 +25,20 @@ public class StartSimulation {
 
         int count = 0;
 
-        while (true) {
+        while (count<10) {
+//        while (true) {
             // вывод в консоль заполненного поля
             areaConsoleRender.render(area);
 
+            //очередь для хода сущностей
             Queue<Creature> queue = MoveService.queueOfCreatureForMove();
 
             if(queue.size() == 1 || queue.size() == 0) return;
             while (!queue.isEmpty()) {
+
                 Creature creature = queue.remove();
 
-                creature.makeMove(); // todo: реализовать этот метод
+//                creature.makeMove(); // todo: реализовать этот метод
 
 //                Coordinate coordinateCreatureForRemove = creature.coordinate;
 
@@ -49,9 +49,9 @@ public class StartSimulation {
                 System.out.println(targetCoordinates + " " + creature.coordinate + " " + creature.getClass().getSimpleName());
 //                System.out.println(coordinateCreatureForRemove);
 
-                if (!entityService.isSquareEmptyArea(targetCoordinates, area)) {
+                if (!entityService.isSquareEmptyArea(targetCoordinates)) {
 
-                    Entity entity = entityService.getInAllEntity(targetCoordinates, area);
+                    Entity entity = entityService.getInAllEntity(targetCoordinates);
                     if (creature.getClass() == Herbivore.class){
 //                        ((Herbivore) creature).setHP((Grass) entity);
                     }
@@ -63,10 +63,8 @@ public class StartSimulation {
 //                    entityService.removeEntity(targetCoordinates, area);
                     System.out.println("EAT " + entity.getClass().getSimpleName());
                 }
-                MoveService.moveCreature(creature, targetCoordinates, area);
-
-
-
+                MoveService.moveCreature(creature, targetCoordinates);
+                areaConsoleRender.render(area);
             }
             System.out.println("________________" + count);
 //            if (area.getMapCreatureEntity().size() == 1) return; // не нужно, это решает  if(queue.size() == 1 || queue.size() == 0) return;

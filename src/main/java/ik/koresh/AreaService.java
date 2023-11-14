@@ -46,7 +46,7 @@ public class AreaService {
 
 
     // наполняем поле сущностями
-    public static void fillingAreaEntities(Area area){
+    public static void fillingAreaEntities(){
         // создаем мапу с пронумированными координатами всего поля
 //        Map<Integer, Coordinate> mapCoord = mapNumberingOfCoordinates();
         // создаем лист рандомных номеров координат в пределах всего поля для установки сущностей
@@ -59,8 +59,7 @@ public class AreaService {
                 int temp = setInt.remove(0);
                 entityService.setEntity(
                         mapCoord.get(temp),
-                        createEntityOfReflection(key, mapCoord.get(temp), PropertiesIconsUtil.get(key)),
-                        area);
+                        createEntityOfReflection(key, mapCoord.get(temp), PropertiesIconsUtil.get(key)));
             }
         });
 
