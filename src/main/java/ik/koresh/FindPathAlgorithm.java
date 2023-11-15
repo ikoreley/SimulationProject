@@ -4,7 +4,7 @@ import ik.koresh.entites.*;
 
 import java.util.*;
 
-public class FindPathAlgorithm { // todo: Подправил надо понаблюдать. все равно не то
+public class FindPathAlgorithm { // todo: не работает правильно
 
     public static final EntityService entityService = EntityService.getInstance();
     Area area = entityService.getArea();

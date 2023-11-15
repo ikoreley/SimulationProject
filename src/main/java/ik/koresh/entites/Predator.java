@@ -21,7 +21,16 @@ public class Predator extends Creature {
         return super.coordinate;
     }
 
-    public void setHP(Creature herbivore) {
-        hp = hp + herbivore.hp;
+    @Override
+    public <T>void setHP(T t) {
+        if (t instanceof Integer hpP){
+            hp += hpP;
+        } else if (t instanceof Herbivore herbivore) {
+            hp += herbivore.getHP();
+        }
+    }
+
+    public Integer getHP(){
+        return hp;
     }
 }

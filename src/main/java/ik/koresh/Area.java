@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Area {
-    private final Map<Coordinate, Entity> mapAllEntity;
-    private final Map<Coordinate, Entity> mapCreatureEntity;
+    private Map<Coordinate, Entity> mapAllEntity;
+    private Map<Coordinate, Entity> mapCreatureEntity;
 
 
     public Area() {

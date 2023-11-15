@@ -16,4 +16,7 @@ abstract public class Creature extends Entity {
 
     public abstract void makeMove();
 
+    public abstract Integer getHP();
+
+    public abstract <T> void  setHP(T hp);
 }

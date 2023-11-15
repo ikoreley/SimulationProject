@@ -4,6 +4,7 @@ import ik.koresh.entites.*;
 import ik.koresh.view.AreaConsoleRender;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class StartSimulation {
 
@@ -30,15 +31,24 @@ public class StartSimulation {
         while (count < 10) {
 //        while (true) {
             // вывод в консоль заполненного поля
-            areaConsoleRender.render(area);
+//            areaConsoleRender.render(area);
 
             //очередь для хода сущностей
             Queue<Creature> queue = MoveService.queueOfCreatureForMove();
 
-            if (queue.size() == 1 || queue.size() == 0) return;
+
+            if (queue.size() == 0) break; // игра окончена
+
+
+            // вывод в консоль заполненного поля
+            areaConsoleRender.render(area);
+
+            System.out.println(queue);
+
             while (!queue.isEmpty()) {
 
                 Creature creature = queue.remove();
+                System.out.println(creature.getHP());
 
                 if (!area.getMapAllEntity().containsKey(creature.coordinate)) {
                     continue;

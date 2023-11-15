@@ -18,7 +18,7 @@ public class MoveService {
 
     // Ход сущности
     public static void moveCreature(Creature creature, Coordinate to) {
-        entityService.setEntityOnAreaFill(to, creature);
+        entityService.setEntity(to, creature);
     }
 
     private static Coordinate possibleMove(Coordinate from, Coordinate to) {
@@ -70,37 +70,38 @@ public class MoveService {
         return result;
     }
 
-    // Создаем очередь для хода сущностей
+    // Создаем очередь для хода Creature
     public static Queue<Creature> queueOfCreatureForMove() {
-        Queue<Creature> queue = new LinkedList<>();
-        final Map<Coordinate, Entity> coordinatesOfActiveAnimal = area.getMapCreatureEntity();
-        final List<Creature> animals = coordinatesOfActiveAnimal.values().stream()
+        Map<Coordinate, Entity> coordinatesOfActiveAnimal = area.getMapCreatureEntity();
+        List<Creature> animals = coordinatesOfActiveAnimal.values().stream()
                 .map(entity -> (Creature) entity)
                 .toList();
-        queue.addAll(animals);
 
-        return queue;
+        return new LinkedList<>(animals);
     }
 
+    // ход Creature
     public static void move(Creature creature) {
-        Coordinate targetCoordinates = FindPathAlgorithm.pathMove(creature);
+        if (creature.getHP()==0){
+            System.out.println("DEAD " + creature.getClass().getSimpleName());
+            entityService.removeEntity(creature.coordinate);
+        } else {
+            Coordinate targetCoordinates = FindPathAlgorithm.pathMove(creature);
 
-        System.out.println(targetCoordinates + " " + creature.coordinate + " " + creature.getClass().getSimpleName());
+            System.out.println(targetCoordinates + " " + creature.coordinate + " " + creature.getClass().getSimpleName());
 
-        if (!entityService.isSquareEmptyArea(targetCoordinates)) {
+            if (!entityService.isSquareEmptyArea(targetCoordinates)) {
 
-            Entity entity = entityService.getInAllEntity(targetCoordinates);
-            if (creature.getClass() == Herbivore.class) {
-                ((Herbivore) creature).setHP((Grass) entity);
-            } else {
-                ((Predator) creature).setHP((Creature) entity);
+                Entity entity = entityService.getInAllEntity(targetCoordinates);
 
+                creature.setHP(entity);
+
+                //***
+                System.out.println("EAT " + entity.getClass().getSimpleName());
             }
-
-            //***
-            System.out.println("EAT " + entity.getClass().getSimpleName());
+            creature.setHP(-1);
+            MoveService.moveCreature(creature, targetCoordinates);
         }
-        MoveService.moveCreature(creature, targetCoordinates);
     }
 
 

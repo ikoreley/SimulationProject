@@ -23,11 +23,18 @@ public class Herbivore extends Creature {
         return super.coordinate;
     }
 
-    public void setHP(Grass grass) {
-        hp += grass.getHpPlus();
+    @Override
+    public <T>void setHP(T t) {
+        if (t instanceof Integer hpP){
+            hp += hpP;
+        } else if (t instanceof Grass grass) {
+            hp += grass.getHP();
+        }
     }
 
-    public Integer getHp() {
+
+    @Override
+    public Integer getHP() {
         return hp;
     }
 }

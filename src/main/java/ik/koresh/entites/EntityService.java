@@ -22,27 +22,27 @@ public class EntityService {
         return area;
     }
 
-    // ставим сущность на поле
-    public void setEntity(Coordinate coordinate, Entity entity){
-        entity.coordinate = coordinate;
-        area.getMapAllEntity().put(coordinate, entity);
-        if (entity instanceof Creature){
-            area.getMapCreatureEntity().put(coordinate, entity);
-        }
-    }
+//    // ставим сущность на поле только при инициализации
+//    public void setEntity(Coordinate coordinate, Entity entity){
+//        entity.coordinate = coordinate;
+//        area.getMapAllEntity().put(coordinate, entity);
+//        if (entity instanceof Creature){
+//            area.getMapCreatureEntity().put(coordinate, entity);
+//        }
+//    }
 
     // ставим на созданное поле
-    public void setEntityOnAreaFill(Coordinate coordinate, Entity entity){
+    public void setEntity(Coordinate coordinateTo, Entity entity){
         Coordinate temp = entity.coordinate;
 
-        area.getMapAllEntity().remove(temp);
-        entity.coordinate = coordinate;
+        removeEntity(temp);
+
+        entity.coordinate = coordinateTo;
         area.getMapAllEntity().put(entity.coordinate, entity);
+//        if (entity.getClass() == Herbivore.class || entity.getClass() == Predator.class){
         if (entity instanceof Creature){
-            area.getMapCreatureEntity().remove(temp);
             area.getMapCreatureEntity().put(entity.coordinate, entity);
         }
-
     }
 
 
@@ -51,16 +51,10 @@ public class EntityService {
     }
 
 
-    public Entity getInCreatureEntity(Coordinate coordinate){
-        return area.getMapCreatureEntity().get(coordinate);
-    }
-
-
     // убираем сущность с поля
     public void removeEntity(Coordinate coordinate){
         area.getMapAllEntity().remove(coordinate);
-        if (isSquareCreatureEntity(coordinate))
-            area.getMapCreatureEntity().remove(coordinate);
+        area.getMapCreatureEntity().remove(coordinate);
     }
 
     // пустая ли ячейка на всем поле
