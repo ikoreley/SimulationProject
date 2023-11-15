@@ -7,10 +7,11 @@ import java.util.*;
 public class FindPathAlgorithm { // todo: Подправил надо понаблюдать. все равно не то
 
     public static final EntityService entityService = EntityService.getInstance();
+    Area area = entityService.getArea();
 
 
     // все соседи доступных ячеек сущности ( Herbivore или Predator)
-    public static Map<Coordinate, Set<Coordinate>> allNeighbourCell(Creature creature, Coordinate coordinate, Area area){
+    public static Map<Coordinate, Set<Coordinate>> allNeighbourCell(Creature creature, Coordinate coordinate) {
         Map<Coordinate, Set<Coordinate>> result = new HashMap<>();
 
         result.put(coordinate, MoveService.getSquareAvailableForMove(creature, coordinate));
@@ -23,11 +24,11 @@ public class FindPathAlgorithm { // todo: Подправил надо понаб
     }
 
 
-    public static Coordinate pathMove (Creature creature, Area area){
+    public static Coordinate pathMove(Creature creature) {
 
         Coordinate coordinateStart = creature.coordinate;
 
-        Map<Coordinate, Set<Coordinate>>  neighbour = allNeighbourCell(creature, coordinateStart, area);
+        Map<Coordinate, Set<Coordinate>> neighbour = allNeighbourCell(creature, coordinateStart);
 
         Map<Coordinate, Coordinate> visited = new LinkedHashMap<>();
 
@@ -45,16 +46,16 @@ public class FindPathAlgorithm { // todo: Подправил надо понаб
 
 //            Set<Coordinates> nextNodes = area.getCreature(coordinateStart).getAvailableMoveCell(area, curNode);
             Set<Coordinate> nextNodes = neighbour.get(curNode);
-            for (Coordinate nextNode: nextNodes){
-                if (!visited.containsKey(nextNode)){
+            for (Coordinate nextNode : nextNodes) {
+                if (!visited.containsKey(nextNode)) {
                     queue.add(nextNode);
                     visited.put(nextNode, curNode);
                     endCoordinate = nextNode;
-                    if (!entityService.isSquareEmptyArea(nextNode)){
-                        if (entityService.getInAllEntity(nextNode).getClass() == Herbivore.class && creature.getClass() == Predator.class){
+                    if (!entityService.isSquareEmptyArea(nextNode)) {
+                        if (entityService.getInAllEntity(nextNode).getClass() == Herbivore.class && creature.getClass() == Predator.class) {
                             queue.clear(); // встречаем подходящю клетку очищаем очередь чтоб дальше не искать
                         }
-                        if (entityService.getInAllEntity(nextNode).getClass() == Grass.class && creature.getClass() == Herbivore.class){
+                        if (entityService.getInAllEntity(nextNode).getClass() == Grass.class && creature.getClass() == Herbivore.class) {
                             queue.clear(); // встречаем подходящю клетку очищаем очередь чтоб дальше не искать
                         }
                     }
@@ -67,7 +68,7 @@ public class FindPathAlgorithm { // todo: Подправил надо понаб
         LinkedList<Coordinate> path = new LinkedList<>();
         Coordinate tempCoordinate = endCoordinate;
 
-        while (coordinateStart != tempCoordinate){
+        while (coordinateStart != tempCoordinate) {
             path.add(tempCoordinate);
             tempCoordinate = visited.get(tempCoordinate);
         }

@@ -3,6 +3,7 @@ package ik.koresh.entites;
 import ik.koresh.Area;
 import ik.koresh.AreaService;
 import ik.koresh.Coordinate;
+import ik.koresh.FindPathAlgorithm;
 
 import java.util.*;
 
@@ -14,28 +15,19 @@ public class MoveService {
 
     private static final Area area = entityService.getArea();
 
-    public static void move() {
-
-    }
-
-
-
 
     // Ход сущности
-    public static void moveCreature(Creature creature, Coordinate to){
-//        Entity creature = entityService.getInAllEntity(from, area);
-//        entityService.removeEntity(creature.coordinate, area);
+    public static void moveCreature(Creature creature, Coordinate to) {
         entityService.setEntityOnAreaFill(to, creature);
     }
 
-    private static Coordinate possibleMove(Coordinate from, Coordinate to){
-        return new Coordinate(from.x()+ to.x(), from.y()+ to.y());
+    private static Coordinate possibleMove(Coordinate from, Coordinate to) {
+        return new Coordinate(from.x() + to.x(), from.y() + to.y());
     }
 
-    private static boolean isPossibleMove(Coordinate from, Coordinate to){
+    private static boolean isPossibleMove(Coordinate from, Coordinate to) {
         return AreaService.mapCoord.containsValue(possibleMove(from, to));
     }
-
 
 
     private static Set<Coordinate> getCreatureMoves() {
@@ -55,21 +47,22 @@ public class MoveService {
 //                new CoordinatesShift(-1, -1)));
     }
 
-    public static boolean isSquareAvailableForMove(Creature creature, Coordinate coordinateTo){
+    public static boolean isSquareAvailableForMove(Creature creature, Coordinate coordinateTo) {
         if (entityService.isSquareEmptyArea(coordinateTo)) return true;
-        else if (creature.getClass() == Herbivore.class) return entityService.getInAllEntity(coordinateTo).getClass() == Grass.class;
+        else if (creature.getClass() == Herbivore.class)
+            return entityService.getInAllEntity(coordinateTo).getClass() == Grass.class;
         else return entityService.getInAllEntity(coordinateTo).getClass() == Herbivore.class;
     }
 
 
-    public static Set<Coordinate> getSquareAvailableForMove(Creature creature, Coordinate coordinate){
+    public static Set<Coordinate> getSquareAvailableForMove(Creature creature, Coordinate coordinate) {
         Set<Coordinate> result = new HashSet<>();
 
-        for (Coordinate coord: getCreatureMoves()){
-            if(isPossibleMove(coordinate, coord)){
+        for (Coordinate coord : getCreatureMoves()) {
+            if (isPossibleMove(coordinate, coord)) {
                 Coordinate newCoordinate = possibleMove(coordinate, coord);
 
-                if (isSquareAvailableForMove(creature, newCoordinate)){
+                if (isSquareAvailableForMove(creature, newCoordinate)) {
                     result.add(newCoordinate);
                 }
             }
@@ -78,7 +71,7 @@ public class MoveService {
     }
 
     // Создаем очередь для хода сущностей
-    public static Queue<Creature>  queueOfCreatureForMove(){
+    public static Queue<Creature> queueOfCreatureForMove() {
         Queue<Creature> queue = new LinkedList<>();
         final Map<Coordinate, Entity> coordinatesOfActiveAnimal = area.getMapCreatureEntity();
         final List<Creature> animals = coordinatesOfActiveAnimal.values().stream()
@@ -87,6 +80,27 @@ public class MoveService {
         queue.addAll(animals);
 
         return queue;
+    }
+
+    public static void move(Creature creature) {
+        Coordinate targetCoordinates = FindPathAlgorithm.pathMove(creature);
+
+        System.out.println(targetCoordinates + " " + creature.coordinate + " " + creature.getClass().getSimpleName());
+
+        if (!entityService.isSquareEmptyArea(targetCoordinates)) {
+
+            Entity entity = entityService.getInAllEntity(targetCoordinates);
+            if (creature.getClass() == Herbivore.class) {
+                ((Herbivore) creature).setHP((Grass) entity);
+            } else {
+                ((Predator) creature).setHP((Creature) entity);
+
+            }
+
+            //***
+            System.out.println("EAT " + entity.getClass().getSimpleName());
+        }
+        MoveService.moveCreature(creature, targetCoordinates);
     }
 
 

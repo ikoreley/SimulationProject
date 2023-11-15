@@ -4,7 +4,7 @@ import ik.koresh.Color;
 import ik.koresh.Coordinate;
 import ik.koresh.util.PropertiesEntityUtil;
 
-public class Predator extends Creature{
+public class Predator extends Creature {
 
     public Predator(Coordinate coordinate, Color color) {
         super(coordinate, color);
@@ -12,16 +12,16 @@ public class Predator extends Creature{
         this.speed = PropertiesEntityUtil.get("SpeedPredator");
     }
 
-//    @Override
-//    public void makeMove() {
-//        MoveService.move();
-//    }
+    @Override
+    public void makeMove() {
+        MoveService.move(this);
+    }
 
-    public Coordinate getCoordinate(){
+    public Coordinate getCoordinate() {
         return super.coordinate;
     }
 
-    public void setHP(Herbivore herbivore){
+    public void setHP(Creature herbivore) {
         hp = hp + herbivore.hp;
     }
 }
