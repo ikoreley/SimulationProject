@@ -5,13 +5,13 @@ import ik.koresh.Coordinate;
 import ik.koresh.util.PropertiesEntityUtil;
 
 public class Grass extends Entity{
-    private Integer hpPlus;
+    private final Integer hp;
     public Grass(Coordinate coordinate, Color color) {
         super(coordinate, color);
-        this.hpPlus = PropertiesEntityUtil.get("EntityGrassHpPlus");
+        this.hp = PropertiesEntityUtil.get("EntityGrassHpPlus");
     }
 
-    public Integer getHpPlus() {
-        return hpPlus;
+    public Integer getHP() {
+        return hp;
     }
 }

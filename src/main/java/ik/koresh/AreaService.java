@@ -1,7 +1,8 @@
 package ik.koresh;
 
 
-import ik.koresh.entites.*;
+import ik.koresh.entites.Entity;
+import ik.koresh.entites.EntityService;
 import ik.koresh.util.PropertiesAreaUtil;
 import ik.koresh.util.PropertiesEntityUtil;
 import ik.koresh.util.PropertiesIconsUtil;
@@ -15,29 +16,29 @@ public class AreaService {
     public static final int col = PropertiesAreaUtil.get("col");
 
     private static final int countCellUsing = PropertiesEntityUtil.get("percent_ageOfFilledCell");
-
+    public static final Map<Integer, Coordinate> mapCoord = mapNumberingOfCoordinates();
     public static final EntityService entityService = EntityService.getInstance();
 
 
     // генерируем колличества сущностей на поле
-    public static Map<String, Integer> generateCountEntityOnArea(){
+    public static Map<String, Integer> generateCountEntityOnArea() {
         Map<String, Integer> countEntities = new HashMap<>();
         int countNull = 0;
         int sumCountEntity = 0;
-        for(String entity: PropertiesIconsUtil.getProperties().stringPropertyNames()){
+        for (String entity : PropertiesIconsUtil.getProperties().stringPropertyNames()) {
             int temp = PropertiesEntityUtil.get("percent_" + entity);
-            if(temp == 0) countNull++;
+            if (temp == 0) countNull++;
 
             countEntities.put(entity, convertPercentInCount(temp));
-            sumCountEntity +=temp;
+            sumCountEntity += temp;
         }
 
         int finalCountNull = countNull;
         int finalSumCountEntity = sumCountEntity;
         // расчитываем количество сущностям которых нет в настройках по количеству
-        countEntities.entrySet().forEach(x-> {
-            if (x.getValue() == 0){
-                x.setValue(convertPercentInCount((countCellUsing - finalSumCountEntity)/finalCountNull));
+        countEntities.entrySet().forEach(x -> {
+            if (x.getValue() == 0) {
+                x.setValue(convertPercentInCount((countCellUsing - finalSumCountEntity) / finalCountNull));
             }
         });
 
@@ -46,9 +47,9 @@ public class AreaService {
 
 
     // наполняем поле сущностями
-    public static void fillingAreaEntities(Area area){
+    public static void fillingAreaEntities() {
         // создаем мапу с пронумированными координатами всего поля
-        Map<Integer, Coordinate> mapCoord = mapNumberingOfCoordinates();
+//        Map<Integer, Coordinate> mapCoord = mapNumberingOfCoordinates();
         // создаем лист рандомных номеров координат в пределах всего поля для установки сущностей
         List<Integer> setInt = new ArrayList<>(generateRandomNumber().stream().toList());
 
@@ -59,8 +60,7 @@ public class AreaService {
                 int temp = setInt.remove(0);
                 entityService.setEntity(
                         mapCoord.get(temp),
-                        createEntityOfReflection(key, mapCoord.get(temp), PropertiesIconsUtil.get(key)),
-                        area);
+                        createEntityOfReflection(key, mapCoord.get(temp), PropertiesIconsUtil.get(key)));
             }
         });
 
@@ -75,38 +75,38 @@ public class AreaService {
         Random random = new Random();
 
         while (setInt.size() < convertPercentInCount(countCellUsing)) {
-            setInt.add(random.nextInt(row*col) +1);
+            setInt.add(random.nextInt(row * col) + 1);
         }
 
         return setInt;
     }
 
     // Нумеруем координаты поля
-    public static Map<Integer, Coordinate> mapNumberingOfCoordinates(){
+    public static Map<Integer, Coordinate> mapNumberingOfCoordinates() {
         Map<Integer, Coordinate> intCoord = new HashMap<>();
         int count = 1;
-        for(int x = 0; x<=row; x++){
-            for (int y = 0; y<=col; y++){
+        for (int x = 0; x < row; x++) {
+            for (int y = 0; y < col; y++) {
                 intCoord.put(count, new Coordinate(x, y));
-                count +=1;
+                count += 1;
             }
         }
         return intCoord;
     }
 
     // конвертируем процент в колличество в зависимости от размера поля
-    private static int convertPercentInCount(int percent){
-        return (row * col)*percent/100;
+    private static int convertPercentInCount(int percent) {
+        return (row * col) * percent / 100;
     }
 
 
-    private static Entity createEntityOfReflection(String className, Coordinate coordinate, Color color){
-                try {
-                    return (Entity) Class.forName("ik.koresh.entites." + className).getConstructors()[0].newInstance(coordinate, color);
-                } catch (ClassNotFoundException | InvocationTargetException | InstantiationException |
-                         IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
+    private static Entity createEntityOfReflection(String className, Coordinate coordinate, Color color) {
+        try {
+            return (Entity) Class.forName("ik.koresh.entites." + className).getConstructors()[0].newInstance(coordinate, color);
+        } catch (ClassNotFoundException | InvocationTargetException | InstantiationException |
+                 IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
