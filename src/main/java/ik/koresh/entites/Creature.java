@@ -2,7 +2,6 @@ package ik.koresh.entites;
 
 import ik.koresh.Color;
 import ik.koresh.Coordinate;
-import ik.koresh.FindPathAlgorithm;
 
 abstract public class Creature extends Entity {
 

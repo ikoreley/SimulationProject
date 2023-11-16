@@ -3,6 +3,7 @@ package ik.koresh;
 
 import ik.koresh.entites.Entity;
 import ik.koresh.entites.EntityService;
+import ik.koresh.util.PropertiesAllUtilTest;
 import ik.koresh.util.PropertiesAreaUtil;
 import ik.koresh.util.PropertiesEntityUtil;
 import ik.koresh.util.PropertiesIconsUtil;
@@ -14,6 +15,7 @@ public class AreaService {
 
     public static final int row = PropertiesAreaUtil.get("row");
     public static final int col = PropertiesAreaUtil.get("col");
+//    public static final int col = PropertiesAllUtilTest.getArea("col"); // общий файл настроек работает!!!
 
     private static final int countCellUsing = PropertiesEntityUtil.get("percent_ageOfFilledCell");
     public static final Map<Integer, Coordinate> mapCoord = mapNumberingOfCoordinates();
@@ -60,6 +62,7 @@ public class AreaService {
                 int temp = setInt.remove(0);
                 entityService.setEntity(
                         mapCoord.get(temp),
+//                        createEntityOfReflection(key, mapCoord.get(temp), PropertiesAllUtilTest.getColor(key))); // общий файл настроек работает!!!
                         createEntityOfReflection(key, mapCoord.get(temp), PropertiesIconsUtil.get(key)));
             }
         });
@@ -70,7 +73,7 @@ public class AreaService {
     // список рандомых номеров координат для добавления сущностей на поле
     public static Set<Integer> generateRandomNumber() {
 
-        Set<Integer> setInt = new LinkedHashSet<>(); // LinkedHashSet- как положил так и оставил, просто HashSet отсортирует
+        Set<Integer> setInt = new LinkedHashSet<>();
 
         Random random = new Random();
 

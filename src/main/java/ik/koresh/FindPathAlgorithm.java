@@ -4,7 +4,7 @@ import ik.koresh.entites.*;
 
 import java.util.*;
 
-public class FindPathAlgorithm { // todo: не работает правильно
+public class FindPathAlgorithm { //todo: не работает правильно
 
     public static final EntityService entityService = EntityService.getInstance();
     Area area = entityService.getArea();
@@ -44,13 +44,14 @@ public class FindPathAlgorithm { // todo: не работает правильн
         while (!queue.isEmpty()) {
             curNode = queue.poll();
 
-//            Set<Coordinates> nextNodes = area.getCreature(coordinateStart).getAvailableMoveCell(area, curNode);
             Set<Coordinate> nextNodes = neighbour.get(curNode);
             for (Coordinate nextNode : nextNodes) {
                 if (!visited.containsKey(nextNode)) {
                     queue.add(nextNode);
                     visited.put(nextNode, curNode);
                     endCoordinate = nextNode;
+
+                    //todo: надо переделать или убрать, не дает ближайшую и каждый раз может давать разные ячейки, поэтому сущность может ходить взад-вперед по одним координатам
                     if (!entityService.isSquareEmptyArea(nextNode)) {
                         if (entityService.getInAllEntity(nextNode).getClass() == Herbivore.class && creature.getClass() == Predator.class) {
                             queue.clear(); // встречаем подходящю клетку очищаем очередь чтоб дальше не искать

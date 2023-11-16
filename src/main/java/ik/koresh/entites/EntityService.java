@@ -22,14 +22,6 @@ public class EntityService {
         return area;
     }
 
-//    // ставим сущность на поле только при инициализации
-//    public void setEntity(Coordinate coordinate, Entity entity){
-//        entity.coordinate = coordinate;
-//        area.getMapAllEntity().put(coordinate, entity);
-//        if (entity instanceof Creature){
-//            area.getMapCreatureEntity().put(coordinate, entity);
-//        }
-//    }
 
     // ставим на созданное поле
     public void setEntity(Coordinate coordinateTo, Entity entity){
