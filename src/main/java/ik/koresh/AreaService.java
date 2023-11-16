@@ -47,11 +47,8 @@ public class AreaService {
         return countEntities;
     }
 
-
     // наполняем поле сущностями
     public static void fillingAreaEntities() {
-        // создаем мапу с пронумированными координатами всего поля
-//        Map<Integer, Coordinate> mapCoord = mapNumberingOfCoordinates();
         // создаем лист рандомных номеров координат в пределах всего поля для установки сущностей
         List<Integer> setInt = new ArrayList<>(generateRandomNumber().stream().toList());
 
@@ -80,7 +77,6 @@ public class AreaService {
         while (setInt.size() < convertPercentInCount(countCellUsing)) {
             setInt.add(random.nextInt(row * col) + 1);
         }
-
         return setInt;
     }
 
@@ -101,7 +97,6 @@ public class AreaService {
     private static int convertPercentInCount(int percent) {
         return (row * col) * percent / 100;
     }
-
 
     private static Entity createEntityOfReflection(String className, Coordinate coordinate, Color color) {
         try {

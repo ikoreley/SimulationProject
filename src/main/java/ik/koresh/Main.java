@@ -1,15 +1,13 @@
 package ik.koresh;
 
 
-import ik.koresh.entites.Creature;
-import ik.koresh.view.AreaConsoleRender;
+import ik.koresh.service.StartSimulation;
 
 public class Main {
     public static void main(String[] args) {
 
-        StartSimulation startSimulation = new StartSimulation();
+        StartSimulation startSimulation = StartSimulation.getInstance();
         startSimulation.gameLoop();
-
 
     }
 

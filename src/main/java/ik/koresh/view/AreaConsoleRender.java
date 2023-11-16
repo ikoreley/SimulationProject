@@ -10,11 +10,9 @@ public class AreaConsoleRender {
     private final static AreaConsoleRender instance = new AreaConsoleRender();
     private AreaConsoleRender(){}
     public static AreaConsoleRender getInstance(){return instance;}
-
     EntityService entityService = EntityService.getInstance();
 
-
-    public void render(Area area){
+    public void render(){
 
         for(int x = 0; x<AreaService.row; x++){
             StringBuilder sb = new StringBuilder();
@@ -30,6 +28,5 @@ public class AreaConsoleRender {
             System.out.println(sb);
         }
     }
-
 
 }

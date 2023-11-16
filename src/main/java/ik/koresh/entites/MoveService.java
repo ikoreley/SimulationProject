@@ -87,20 +87,25 @@ public class MoveService {
             entityService.removeEntity(creature.coordinate);
         } else {
             Coordinate targetCoordinates = FindPathAlgorithm.pathMove(creature);
+            if(targetCoordinates != creature.coordinate) {
 
-            System.out.println(targetCoordinates + " " + creature.coordinate + " " + creature.getClass().getSimpleName());
+                System.out.println(targetCoordinates + " " + creature.coordinate + "-" + creature.getClass().getSimpleName());
 
-            if (!entityService.isSquareEmptyArea(targetCoordinates)) {
+                if (!entityService.isSquareEmptyArea(targetCoordinates)) {
 
-                Entity entity = entityService.getInAllEntity(targetCoordinates);
+                    Entity entity = entityService.getInAllEntity(targetCoordinates);
 
-                creature.setHP(entity);
+                    creature.setHP(entity);
 
-                //***
-                System.out.println("EAT " + entity.getClass().getSimpleName());
+                    //***
+                    System.out.println("EAT " + entity.getClass().getSimpleName());
+
+                    //                entityService.removeEntity(entity.coordinate);
+                }
             }
-            creature.setHP(-1);
             MoveService.moveCreature(creature, targetCoordinates);
+            creature.setHP(-1);
+
         }
     }
 

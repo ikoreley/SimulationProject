@@ -1,4 +1,4 @@
-package ik.koresh;
+package ik.koresh.util;
 
 
 import java.io.InputStream;

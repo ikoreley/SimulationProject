@@ -4,10 +4,9 @@ import ik.koresh.entites.*;
 
 import java.util.*;
 
-public class FindPathAlgorithm { //todo: не работает правильно
+public class FindPathAlgorithm {
 
     public static final EntityService entityService = EntityService.getInstance();
-    Area area = entityService.getArea();
 
 
     // все соседи доступных ячеек сущности ( Herbivore или Predator)
@@ -26,6 +25,8 @@ public class FindPathAlgorithm { //todo: не работает правильн�
 
     public static Coordinate pathMove(Creature creature) {
 
+        LinkedList<Coordinate> entityForEat = new LinkedList<>();
+
         Coordinate coordinateStart = creature.coordinate;
 
         Map<Coordinate, Set<Coordinate>> neighbour = allNeighbourCell(creature, coordinateStart);
@@ -39,8 +40,6 @@ public class FindPathAlgorithm { //todo: не работает правильн�
 
         Coordinate curNode;
 
-        Coordinate endCoordinate = new Coordinate(0, 0);
-
         while (!queue.isEmpty()) {
             curNode = queue.poll();
 
@@ -49,15 +48,13 @@ public class FindPathAlgorithm { //todo: не работает правильн�
                 if (!visited.containsKey(nextNode)) {
                     queue.add(nextNode);
                     visited.put(nextNode, curNode);
-                    endCoordinate = nextNode;
 
-                    //todo: надо переделать или убрать, не дает ближайшую и каждый раз может давать разные ячейки, поэтому сущность может ходить взад-вперед по одним координатам
                     if (!entityService.isSquareEmptyArea(nextNode)) {
-                        if (entityService.getInAllEntity(nextNode).getClass() == Herbivore.class && creature.getClass() == Predator.class) {
-                            queue.clear(); // встречаем подходящю клетку очищаем очередь чтоб дальше не искать
+                        if (creature.getClass() == Predator.class && entityService.getInAllEntity(nextNode).getClass() == Herbivore.class) {
+                            entityForEat.add(nextNode);
                         }
-                        if (entityService.getInAllEntity(nextNode).getClass() == Grass.class && creature.getClass() == Herbivore.class) {
-                            queue.clear(); // встречаем подходящю клетку очищаем очередь чтоб дальше не искать
+                        if (creature.getClass() == Herbivore.class && entityService.getInAllEntity(nextNode).getClass() == Grass.class) {
+                            entityForEat.add(nextNode);
                         }
                     }
 
@@ -67,15 +64,22 @@ public class FindPathAlgorithm { //todo: не работает правильн�
         }
 
         LinkedList<Coordinate> path = new LinkedList<>();
-        Coordinate tempCoordinate = endCoordinate;
-
-        while (coordinateStart != tempCoordinate) {
-            path.add(tempCoordinate);
-            tempCoordinate = visited.get(tempCoordinate);
+        int flag = 0;
+        for (Coordinate coordEnd : entityForEat){
+            LinkedList<Coordinate> tempPath = new LinkedList<>();
+            while (coordinateStart != coordEnd){
+                if (flag == 0){
+                    path.add(coordEnd);
+                }
+                tempPath.add(coordEnd);
+                coordEnd = visited.get(coordEnd);
+            }
+            if (tempPath.size() < path.size()) path = tempPath;
+            flag ++;
         }
-        System.out.println(path);
-        return path.getLast();
-    }
 
+        System.out.println(path);
+        return path.isEmpty() ? coordinateStart : path.getLast();
+    }
 
 }
