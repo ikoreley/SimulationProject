@@ -1,18 +1,17 @@
-package ik.koresh.entites;
+package ik.koresh.service;
 
 import ik.koresh.Area;
-import ik.koresh.AreaService;
 import ik.koresh.Coordinate;
-import ik.koresh.FindPathAlgorithm;
+import ik.koresh.entites.Creature;
+import ik.koresh.entites.Entity;
+import ik.koresh.entites.Grass;
+import ik.koresh.entites.Herbivore;
 
 import java.util.*;
 
 public class MoveService {
 
     private static final EntityService entityService = EntityService.getInstance();
-
-    private static final Set<Coordinate> creatureMoves = getCreatureMoves();
-
     private static final Area area = entityService.getArea();
 
 
@@ -82,31 +81,44 @@ public class MoveService {
 
     // ход Creature
     public static void move(Creature creature) {
-        if (creature.getHP()==0){
+        if (isDead(creature)) {
             System.out.println("DEAD " + creature.getClass().getSimpleName());
             entityService.removeEntity(creature.coordinate);
-        } else {
-            Coordinate targetCoordinates = FindPathAlgorithm.pathMove(creature);
-            if(targetCoordinates != creature.coordinate) {
-
-                System.out.println(targetCoordinates + " " + creature.coordinate + "-" + creature.getClass().getSimpleName());
-
-                if (!entityService.isSquareEmptyArea(targetCoordinates)) {
-
-                    Entity entity = entityService.getInAllEntity(targetCoordinates);
-
-                    creature.setHP(entity);
-
-                    //***
-                    System.out.println("EAT " + entity.getClass().getSimpleName());
-
-                    //                entityService.removeEntity(entity.coordinate);
-                }
-            }
-            MoveService.moveCreature(creature, targetCoordinates);
-            creature.setHP(-1);
-
+            return;
         }
+
+        Coordinate targetCoordinates = FindPathAlgorithm.coordinateMove(creature);
+        if (targetCoordinates == creature.coordinate) {
+            return;
+        }
+
+        System.out.println(targetCoordinates + " " + creature.coordinate + "-" + creature.getClass().getSimpleName());
+
+        if (isCellBusy(targetCoordinates)) {
+            eatEntity(creature, targetCoordinates);
+        }
+
+        creature.setHP(-1);
+        MoveService.moveCreature(creature, targetCoordinates);
+
+    }
+
+    private static boolean isDead(Creature creature) {
+        return creature.getHP() == 0;
+    }
+
+    private static void eatEntity(Creature creature, Coordinate targetCoordinates) {
+        Entity entity = entityService.getInAllEntity(targetCoordinates);
+
+        creature.setHP(entity);
+
+        System.out.println("EAT " + entity.getClass().getSimpleName());
+
+        entityService.removeEntity(entity.coordinate);
+    }
+
+    private static boolean isCellBusy(Coordinate targetCoordinates) {
+        return !entityService.isSquareEmptyArea(targetCoordinates);
     }
 
 

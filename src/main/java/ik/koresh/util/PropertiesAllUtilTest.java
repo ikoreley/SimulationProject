@@ -27,7 +27,6 @@ public class PropertiesAllUtilTest {
 
     public static Integer getArea(String key){
         return Integer.parseInt(PROPERTIES.getProperty(key, "10"));
-//        return (Integer) PROPERTIES.getOrDefault(key, 10); // it worked and stopped
     }
 
     public static Integer getEntity(String key){

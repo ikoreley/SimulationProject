@@ -1,10 +1,9 @@
 package ik.koresh.view;
 
-import ik.koresh.Area;
-import ik.koresh.AreaService;
+import ik.koresh.service.AreaService;
 import ik.koresh.Color;
 import ik.koresh.Coordinate;
-import ik.koresh.entites.EntityService;
+import ik.koresh.service.EntityService;
 
 public class AreaConsoleRender {
     private final static AreaConsoleRender instance = new AreaConsoleRender();

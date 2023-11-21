@@ -25,7 +25,6 @@ public class PropertiesAreaUtil {
 
     public static Integer get(String key){
         return Integer.parseInt(PROPERTIES.getProperty(key, "10"));
-//        return (Integer) PROPERTIES.getOrDefault(key, 10); // it worked and stopped
     }
     public static Properties getProperties(){
         return PROPERTIES;

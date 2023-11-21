@@ -1,8 +1,10 @@
-package ik.koresh.entites;
+package ik.koresh.service;
 
 import ik.koresh.Area;
-import ik.koresh.AreaService;
 import ik.koresh.Coordinate;
+import ik.koresh.entites.Creature;
+import ik.koresh.entites.Entity;
+
 
 public class EntityService {
     private final static EntityService instance = new EntityService();
@@ -28,13 +30,15 @@ public class EntityService {
         Coordinate temp = entity.coordinate;
 
         removeEntity(temp);
-
         entity.coordinate = coordinateTo;
+
         area.getMapAllEntity().put(entity.coordinate, entity);
+
 //        if (entity.getClass() == Herbivore.class || entity.getClass() == Predator.class){
         if (entity instanceof Creature){
             area.getMapCreatureEntity().put(entity.coordinate, entity);
         }
+
     }
 
 

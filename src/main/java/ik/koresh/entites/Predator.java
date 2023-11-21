@@ -2,6 +2,7 @@ package ik.koresh.entites;
 
 import ik.koresh.Color;
 import ik.koresh.Coordinate;
+import ik.koresh.service.MoveService;
 import ik.koresh.util.PropertiesEntityUtil;
 
 public class Predator extends Creature {

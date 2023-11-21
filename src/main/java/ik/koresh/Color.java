@@ -1,7 +1,6 @@
 package ik.koresh;
 
 public enum Color {
-
     ANSI_RESET ("\u001B[0m"),
     WHITE("\u001B[0;107m"),
     RED ("\u001B[41m"),

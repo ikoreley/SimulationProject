@@ -1,10 +1,7 @@
 package ik.koresh.service;
 
 import ik.koresh.Area;
-import ik.koresh.AreaService;
 import ik.koresh.entites.Creature;
-import ik.koresh.entites.EntityService;
-import ik.koresh.entites.MoveService;
 import ik.koresh.view.AreaConsoleRender;
 import ik.koresh.view.ViewMenu;
 
@@ -13,6 +10,7 @@ import java.util.Scanner;
 
 public class StartSimulation {
     private static final StartSimulation instance = new StartSimulation();
+    private static final EntityService entityService = EntityService.getInstance();
     private final AreaConsoleRender areaConsoleRender = AreaConsoleRender.getInstance();
     private final Area area;
 
@@ -28,20 +26,17 @@ public class StartSimulation {
 
 
     public void gameLoop() {
-
         viewMenu.printMenu();
 
         Integer flag = menu.menuStart();
         if (flag == 0) gameLoop();
 
-
         System.out.println(area.getMapAllEntity());
         System.out.println(area.getMapCreatureEntity());
 
-        int count = 0;
+        int moveCounter = 0;
 
         while (true) {
-
             if (flag == 2){
                 Scanner scanner = new Scanner(System.in);
                 scanner.next();
@@ -57,16 +52,17 @@ public class StartSimulation {
 
             while (!queue.isEmpty()) {
                 Creature creature = queue.remove();
-                if (!area.getMapAllEntity().containsKey(creature.coordinate)) {
+                // проверяем эта ли сущность сейчас по эти координатам, если нет то ее уже съели
+                if (entityService.getInAllEntity(creature.coordinate) != creature){
                     continue;
                 }
                 System.out.println(creature.getHP() + " - " + creature.getClass().getSimpleName());
                 creature.makeMove();
                 areaConsoleRender.render();
             }
-            //***
-            System.out.println("________________" + count);
-            count++;
+
+            System.out.println("________________" + moveCounter);
+            moveCounter++;
         }
     }
 }

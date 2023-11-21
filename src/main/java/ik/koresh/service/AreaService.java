@@ -1,9 +1,9 @@
-package ik.koresh;
+package ik.koresh.service;
 
 
+import ik.koresh.Color;
+import ik.koresh.Coordinate;
 import ik.koresh.entites.Entity;
-import ik.koresh.entites.EntityService;
-import ik.koresh.util.PropertiesAllUtilTest;
 import ik.koresh.util.PropertiesAreaUtil;
 import ik.koresh.util.PropertiesEntityUtil;
 import ik.koresh.util.PropertiesIconsUtil;
